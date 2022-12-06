@@ -1,27 +1,15 @@
 package dayOne
 
 import (
+	"adventofcode/mats/utils"
 	"fmt"
-	"os"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func check(e error) {
-	if e != nil {
-		panicMessage := fmt.Sprintf("Fails: %f", e)
-		panic(panicMessage)
-	}
-}
-func readAndReturnFile() []byte {
-	dat, err := os.ReadFile("dayOne/data.txt")
-	check(err)
-	return dat
-}
-
 func getAccumulatedCalories() []int {
-	dat := readAndReturnFile()
+	dat := utils.ReadAndReturnFile("dayOne/data.txt")
 	fileString := string(dat)
 
 	stringsSlice := strings.Split(fileString, "\n\n")
@@ -57,5 +45,5 @@ func findLargest(calories []int) int {
 func DoWork() {
 	calories := getAccumulatedCalories()
 	greatest := findLargest(calories)
-	fmt.Print(greatest)
+	fmt.Println(greatest)
 }
