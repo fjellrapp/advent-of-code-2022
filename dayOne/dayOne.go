@@ -38,12 +38,24 @@ func getAccumulatedCalories() []int {
 }
 
 func findLargest(calories []int) int {
+	fmt.Println(calories)
 	largest := calories[len(calories)-1]
 	return largest
+}
+
+func findSumTopThree(calories []int) int {
+	topThree := calories[len(calories)-3:]
+	var sum int = 0
+	for _, i := range topThree {
+		sum += i
+	}
+
+	return sum
 }
 
 func DoWork() {
 	calories := getAccumulatedCalories()
 	greatest := findLargest(calories)
-	fmt.Println(greatest)
+	sum := findSumTopThree(calories)
+	fmt.Println(sum, greatest)
 }

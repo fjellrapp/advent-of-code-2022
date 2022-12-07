@@ -4,20 +4,22 @@ import (
 	"adventofcode/mats/utils"
 	"bufio"
 	"fmt"
+	"strings"
 	"unicode"
 )
 
+var letterRangeLower = make(map[string]int)
+var letterRangeUpper = make(map[string]int)
+var currentLowerIndex int = 1
+var currentUpperIndex int = 27
+
 func DayThree() {
+	constructLetterRange()
 	partOne()
+	partTwo()
 }
 
-func partOne() {
-
-	scanner := readFileAndReturnScanner()
-	letterRangeLower := make(map[string]int)
-	letterRangeUpper := make(map[string]int)
-	var currentLowerIndex int = 1
-	var currentUpperIndex int = 27
+func constructLetterRange() {
 	for i := 'a'; i <= 'z'; i++ {
 
 		letterRangeLower[string(i)] = currentLowerIndex
@@ -28,13 +30,18 @@ func partOne() {
 		currentUpperIndex++
 
 	}
+}
+
+func partOne() {
+
+	scanner := readFileAndReturnScanner()
+
 	commonItemsMap := make(map[string]string)
 	for scanner.Scan() {
 		var stringLength = len(scanner.Text())
 		compartmentOne := scanner.Text()[0 : stringLength/2]
 		compartmentTwo := scanner.Text()[stringLength/2:]
 
-		fmt.Println(compartmentOne, compartmentTwo)
 		for _, one := range compartmentOne {
 			for _, two := range compartmentTwo {
 				if unicode.IsUpper(one) && unicode.IsUpper(two) {
@@ -65,6 +72,49 @@ func partOne() {
 	}
 
 	fmt.Println(sum)
+}
+
+func partTwo() {
+	scanner := readFileAndReturnScanner()
+
+	groups := constructGroups(scanner)
+
+	var sum int = 0
+	for _, group := range groups {
+		for key, pri := range letterRangeLower {
+			if strings.Contains(group[0], string(key)) && strings.Contains(group[1], key) && strings.Contains(group[2], string(key)) {
+				sum += pri
+				break
+			}
+		}
+		for key, pri := range letterRangeUpper {
+			if strings.Contains(group[0], string(key)) && strings.Contains(group[1], string(key)) && strings.Contains(group[2], string(key)) {
+				sum += pri
+				break
+			}
+		}
+	}
+
+	fmt.Println(sum)
+
+}
+
+func constructGroups(scanner *bufio.Scanner) map[int][]string {
+	groups := make(map[int][]string)
+
+	var MAX_ITERATION int = 3
+	var CURRENT int = 0
+	var GROUP_INDEX int = 0
+	for scanner.Scan() {
+		if CURRENT == MAX_ITERATION {
+			CURRENT = 0
+			GROUP_INDEX += 1
+		}
+
+		groups[GROUP_INDEX] = append(groups[GROUP_INDEX], scanner.Text())
+		CURRENT++
+	}
+	return groups
 }
 func readFileAndReturnScanner() *bufio.Scanner {
 	file := utils.OpenFile("dayThree/data.txt")
