@@ -38,7 +38,6 @@ func getAccumulatedCalories() []int {
 }
 
 func findLargest(calories []int) int {
-	fmt.Println(calories)
 	largest := calories[len(calories)-1]
 	return largest
 }
