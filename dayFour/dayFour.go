@@ -3,7 +3,6 @@ package dayFour
 import (
 	"adventofcode/mats/utils"
 	"bufio"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -18,24 +17,20 @@ func DayFour() {
 		splitRange := strings.Split(scanner.Text(), ",")
 		formattedRangeUpper := formatRange(splitRange[0])
 		formattedRangeLower := formatRange(splitRange[1])
-
-		fully_contains(formattedRangeUpper, formattedRangeLower)
+		find_overlap(formattedRangeUpper, formattedRangeLower)
 	}
-
-	fmt.Print("overlap", sum_overlap)
-
 }
 
-func fully_contains(upper, lower []int) {
+func find_overlap(upper, lower []int) {
 	var a int = upper[0]
 	var b int = upper[1]
 	var c int = lower[0]
 	var d int = lower[1]
-
+	// Part one
 	if c <= a && b <= d || a <= c && d <= b {
 		sum_fully_contains += 1
 	}
-
+	// Part two
 	var maxVal = max(a, c)
 	var minVal = min(b, d)
 
